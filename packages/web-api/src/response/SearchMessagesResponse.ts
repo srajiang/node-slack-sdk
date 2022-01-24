@@ -37,15 +37,15 @@ export interface Match {
   permalink?:    string;
   no_reactions?: boolean;
   previous?:     Previous;
-  previous_2?:   Previous2;
+  previous_2?:   Previous;
   blocks?:       Block[];
-  attachments?:  MatchAttachment[];
+  attachments?:  Attachment[];
   is_mpim?:      boolean;
   score?:        number;
   files?:        File[];
 }
 
-export interface MatchAttachment {
+export interface Attachment {
   msg_subtype?:           string;
   fallback?:              string;
   callback_id?:           string;
@@ -91,6 +91,8 @@ export interface MatchAttachment {
   ts?:                    string;
   mrkdwn_in?:             string[];
   actions?:               Action[];
+  blocks?:                Block[];
+  files?:                 File[];
   filename?:              string;
   size?:                  number;
   mimetype?:              string;
@@ -106,11 +108,11 @@ export interface Action {
   type?:             string;
   value?:            string;
   confirm?:          ActionConfirm;
-  options?:          Option[];
-  selected_options?: Option[];
+  options?:          SelectedOptionElement[];
+  selected_options?: SelectedOptionElement[];
   data_source?:      string;
   min_query_length?: number;
-  option_groups?:    OptionGroup[];
+  option_groups?:    ActionOptionGroup[];
   url?:              string;
 }
 
@@ -121,38 +123,19 @@ export interface ActionConfirm {
   dismiss_text?: string;
 }
 
-export interface OptionGroup {
-  text?: string;
+export interface ActionOptionGroup {
+  text?:    string;
+  options?: SelectedOptionElement[];
 }
 
-export interface Option {
+export interface SelectedOptionElement {
   text?:  string;
   value?: string;
 }
 
-export interface Field {
-  title?: string;
-  value?: string;
-  short?: boolean;
-}
-
-export interface Metadata {
-  thumb_64?:    boolean;
-  thumb_80?:    boolean;
-  thumb_160?:   boolean;
-  original_w?:  number;
-  original_h?:  number;
-  thumb_360_w?: number;
-  thumb_360_h?: number;
-  format?:      string;
-  extension?:   string;
-  rotation?:    number;
-  thumb_tiny?:  string;
-}
-
 export interface Block {
   type?:         string;
-  elements?:     Element[];
+  elements?:     Accessory[];
   block_id?:     string;
   fallback?:     string;
   image_url?:    string;
@@ -167,33 +150,28 @@ export interface Block {
 }
 
 export interface Accessory {
-  type?:         string;
-  image_url?:    string;
-  alt_text?:     string;
-  fallback?:     string;
-  image_width?:  number;
-  image_height?: number;
-  image_bytes?:  number;
-}
-
-export interface Element {
   type?:                            string;
   text?:                            Text;
   action_id?:                       string;
   url?:                             string;
   value?:                           string;
   style?:                           string;
-  confirm?:                         ElementConfirm;
+  confirm?:                         AccessoryConfirm;
+  options?:                         InitialOptionElement[];
+  initial_options?:                 InitialOptionElement[];
+  focus_on_load?:                   boolean;
+  initial_option?:                  InitialOptionElement;
   placeholder?:                     Text;
   initial_channel?:                 string;
   response_url_enabled?:            boolean;
-  focus_on_load?:                   boolean;
+  initial_channels?:                string[];
+  max_selected_items?:              number;
   initial_conversation?:            string;
   default_to_current_conversation?: boolean;
   filter?:                          Filter;
+  initial_conversations?:           string[];
   initial_date?:                    string;
   initial_time?:                    string;
-  initial_option?:                  InitialOption;
   min_query_length?:                number;
   image_url?:                       string;
   alt_text?:                        string;
@@ -201,10 +179,12 @@ export interface Element {
   image_width?:                     number;
   image_height?:                    number;
   image_bytes?:                     number;
+  option_groups?:                   AccessoryOptionGroup[];
   initial_user?:                    string;
+  initial_users?:                   string[];
 }
 
-export interface ElementConfirm {
+export interface AccessoryConfirm {
   title?:   Text;
   text?:    Text;
   confirm?: Text;
@@ -220,32 +200,27 @@ export interface Text {
 }
 
 export interface Filter {
+  include?:                          string[];
   exclude_external_shared_channels?: boolean;
   exclude_bot_users?:                boolean;
 }
 
-export interface InitialOption {
+export interface InitialOptionElement {
   text?:        Text;
   value?:       string;
   description?: Text;
   url?:         string;
 }
 
-export interface Channel {
-  id?:                    string;
-  is_channel?:            boolean;
-  is_group?:              boolean;
-  is_im?:                 boolean;
-  name?:                  string;
-  is_shared?:             boolean;
-  is_org_shared?:         boolean;
-  is_ext_shared?:         boolean;
-  is_private?:            boolean;
-  is_mpim?:               boolean;
-  pending_shared?:        string[];
-  is_pending_ext_shared?: boolean;
-  user?:                  string;
-  name_normalized?:       string;
+export interface AccessoryOptionGroup {
+  label?:   Text;
+  options?: InitialOptionElement[];
+}
+
+export interface Field {
+  title?: string;
+  value?: string;
+  short?: boolean;
 }
 
 export interface File {
@@ -342,7 +317,13 @@ export interface File {
   is_public?:                 boolean;
   public_url_shared?:         boolean;
   display_as_bot?:            boolean;
+  channels?:                  string[];
+  groups?:                    string[];
+  ims?:                       string[];
   shares?:                    Shares;
+  to?:                        Cc[];
+  from?:                      Cc[];
+  cc?:                        Cc[];
   channel_actions_ts?:        string;
   channel_actions_count?:     number;
   headers?:                   Headers;
@@ -351,7 +332,16 @@ export interface File {
   initial_comment?:           InitialComment;
   num_stars?:                 number;
   is_starred?:                boolean;
+  pinned_to?:                 string[];
+  reactions?:                 Reaction[];
   comments_count?:            number;
+  blocks?:                    Block[];
+}
+
+export interface Cc {
+  address?:  string;
+  name?:     string;
+  original?: string;
 }
 
 export interface Headers {
@@ -371,7 +361,59 @@ export interface InitialComment {
   is_intro?:  boolean;
 }
 
+export interface Reaction {
+  name?:  string;
+  count?: number;
+  users?: string[];
+  url?:   string;
+}
+
 export interface Shares {
+  public?:  { [key: string]: Private[] };
+  private?: { [key: string]: Private[] };
+}
+
+export interface Private {
+  share_user_id?:     string;
+  reply_users?:       string[];
+  reply_users_count?: number;
+  reply_count?:       number;
+  ts?:                string;
+  thread_ts?:         string;
+  latest_reply?:      string;
+  channel_name?:      string;
+  team_id?:           string;
+}
+
+export interface Metadata {
+  thumb_64?:    boolean;
+  thumb_80?:    boolean;
+  thumb_160?:   boolean;
+  original_w?:  number;
+  original_h?:  number;
+  thumb_360_w?: number;
+  thumb_360_h?: number;
+  format?:      string;
+  extension?:   string;
+  rotation?:    number;
+  thumb_tiny?:  string;
+}
+
+export interface Channel {
+  id?:                    string;
+  is_channel?:            boolean;
+  is_group?:              boolean;
+  is_im?:                 boolean;
+  name?:                  string;
+  is_shared?:             boolean;
+  is_org_shared?:         boolean;
+  is_ext_shared?:         boolean;
+  is_private?:            boolean;
+  is_mpim?:               boolean;
+  pending_shared?:        string[];
+  is_pending_ext_shared?: boolean;
+  user?:                  string;
+  name_normalized?:       string;
 }
 
 export interface Previous {
@@ -382,73 +424,8 @@ export interface Previous {
   text?:        string;
   iid?:         string;
   permalink?:   string;
-  attachments?: MatchAttachment[];
+  attachments?: Attachment[];
   blocks?:      Block[];
-}
-
-export interface Previous2 {
-  type?:        string;
-  user?:        string;
-  username?:    string;
-  ts?:          string;
-  text?:        string;
-  iid?:         string;
-  permalink?:   string;
-  attachments?: Previous2_Attachment[];
-  blocks?:      Block[];
-}
-
-export interface Previous2_Attachment {
-  service_name?:          string;
-  title?:                 string;
-  title_link?:            string;
-  text?:                  string;
-  fallback?:              string;
-  image_url?:             string;
-  ts?:                    number | string;
-  from_url?:              string;
-  image_width?:           number;
-  image_height?:          number;
-  image_bytes?:           number;
-  service_icon?:          string;
-  id?:                    number;
-  original_url?:          string;
-  msg_subtype?:           string;
-  callback_id?:           string;
-  color?:                 string;
-  pretext?:               string;
-  service_url?:           string;
-  author_id?:             string;
-  author_name?:           string;
-  author_link?:           string;
-  author_icon?:           string;
-  author_subname?:        string;
-  channel_id?:            string;
-  channel_name?:          string;
-  bot_id?:                string;
-  indent?:                boolean;
-  is_msg_unfurl?:         boolean;
-  is_reply_unfurl?:       boolean;
-  is_thread_root_unfurl?: boolean;
-  is_app_unfurl?:         boolean;
-  app_unfurl_url?:        string;
-  fields?:                Field[];
-  thumb_url?:             string;
-  thumb_width?:           number;
-  thumb_height?:          number;
-  video_url?:             string;
-  video_html?:            string;
-  video_html_width?:      number;
-  video_html_height?:     number;
-  footer?:                string;
-  footer_icon?:           string;
-  mrkdwn_in?:             string[];
-  actions?:               Action[];
-  filename?:              string;
-  size?:                  number;
-  mimetype?:              string;
-  url?:                   string;
-  metadata?:              Metadata;
 }
 
 export interface Pagination {

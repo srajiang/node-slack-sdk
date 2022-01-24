@@ -38,6 +38,12 @@ export interface File {
   display_as_bot?:            boolean;
   username?:                  string;
   url_private?:               string;
+  media_display_type?:        string;
+  permalink?:                 string;
+  channels?:                  string[];
+  groups?:                    string[];
+  ims?:                       string[];
+  comments_count?:            number;
   thumb_64?:                  string;
   thumb_80?:                  string;
   thumb_360?:                 string;
@@ -63,12 +69,6 @@ export interface File {
   original_w?:                number;
   original_h?:                number;
   thumb_tiny?:                string;
-  permalink?:                 string;
-  channels?:                  string[];
-  groups?:                    string[];
-  ims?:                       string[];
-  comments_count?:            number;
-  media_display_type?:        string;
   subject?:                   string;
   non_owner_editable?:        boolean;
   editor?:                    string;
@@ -117,6 +117,9 @@ export interface File {
   lines?:                     number;
   lines_more?:                number;
   shares?:                    Shares;
+  to?:                        Cc[];
+  from?:                      Cc[];
+  cc?:                        Cc[];
   channel_actions_ts?:        string;
   channel_actions_count?:     number;
   headers?:                   Headers;
@@ -125,6 +128,99 @@ export interface File {
   initial_comment?:           InitialComment;
   num_stars?:                 number;
   is_starred?:                boolean;
+  pinned_to?:                 string[];
+  reactions?:                 Reaction[];
+  blocks?:                    Block[];
+}
+
+export interface Block {
+  type?:         string;
+  elements?:     Accessory[];
+  block_id?:     string;
+  fallback?:     string;
+  image_url?:    string;
+  image_width?:  number;
+  image_height?: number;
+  image_bytes?:  number;
+  alt_text?:     string;
+  title?:        Text;
+  text?:         Text;
+  fields?:       Text[];
+  accessory?:    Accessory;
+}
+
+export interface Accessory {
+  type?:                            string;
+  text?:                            Text;
+  action_id?:                       string;
+  url?:                             string;
+  value?:                           string;
+  style?:                           string;
+  confirm?:                         Confirm;
+  options?:                         Option[];
+  initial_options?:                 Option[];
+  focus_on_load?:                   boolean;
+  initial_option?:                  Option;
+  placeholder?:                     Text;
+  initial_channel?:                 string;
+  response_url_enabled?:            boolean;
+  initial_channels?:                string[];
+  max_selected_items?:              number;
+  initial_conversation?:            string;
+  default_to_current_conversation?: boolean;
+  filter?:                          Filter;
+  initial_conversations?:           string[];
+  initial_date?:                    string;
+  initial_time?:                    string;
+  min_query_length?:                number;
+  image_url?:                       string;
+  alt_text?:                        string;
+  fallback?:                        string;
+  image_width?:                     number;
+  image_height?:                    number;
+  image_bytes?:                     number;
+  option_groups?:                   OptionGroup[];
+  initial_user?:                    string;
+  initial_users?:                   string[];
+}
+
+export interface Confirm {
+  title?:   Text;
+  text?:    Text;
+  confirm?: Text;
+  deny?:    Text;
+  style?:   string;
+}
+
+export interface Text {
+  type?:     string;
+  text?:     string;
+  emoji?:    boolean;
+  verbatim?: boolean;
+}
+
+export interface Filter {
+  include?:                          string[];
+  exclude_external_shared_channels?: boolean;
+  exclude_bot_users?:                boolean;
+}
+
+export interface Option {
+  text?:        Text;
+  value?:       string;
+  description?: Text;
+  url?:         string;
+}
+
+export interface OptionGroup {
+  label?:   Text;
+  options?: Option[];
+}
+
+export interface Cc {
+  address?:  string;
+  name?:     string;
+  original?: string;
 }
 
 export interface Headers {
@@ -144,7 +240,28 @@ export interface InitialComment {
   is_intro?:  boolean;
 }
 
+export interface Reaction {
+  name?:  string;
+  count?: number;
+  users?: string[];
+  url?:   string;
+}
+
 export interface Shares {
+  public?:  { [key: string]: Private[] };
+  private?: { [key: string]: Private[] };
+}
+
+export interface Private {
+  share_user_id?:     string;
+  reply_users?:       string[];
+  reply_users_count?: number;
+  reply_count?:       number;
+  ts?:                string;
+  thread_ts?:         string;
+  latest_reply?:      string;
+  channel_name?:      string;
+  team_id?:           string;
 }
 
 export interface ResponseMetadata {
