@@ -311,7 +311,7 @@ export interface DispatchActionConfig {
  */
 
 export type KnownBlock = ImageBlock | ContextBlock | ActionsBlock | DividerBlock |
-SectionBlock | InputBlock | FileBlock | HeaderBlock;
+  SectionBlock | InputBlock | FileBlock | HeaderBlock;
 
 export interface Block {
   type: string;
@@ -471,5 +471,4 @@ export interface CallUserExternal {
 export interface Metadata {
   event_type: string;
   event_payload: Record<string, unknown>;
-  notification_subscription_id: string;
 }
