@@ -1465,6 +1465,7 @@ export interface ChatScheduleMessageArguments extends WebAPICallOptions, TokenOv
   unfurl_links?: boolean;
   unfurl_media?: boolean;
   team_id?: string;
+  metadata?: Metadata;
 }
 export interface ChatScheduledMessagesListArguments extends WebAPICallOptions, TokenOverridable,
   CursorPaginationEnabled {
@@ -1530,6 +1531,7 @@ export interface ConversationsDeclineSharedInviteArguments extends WebAPICallOpt
 export interface ConversationsHistoryArguments extends WebAPICallOptions, TokenOverridable, CursorPaginationEnabled,
   TimelinePaginationEnabled {
   channel: string;
+  include_all_metadata?: boolean;
 }
 cursorPaginationEnabledMethods.add('conversations.history');
 export interface ConversationsInfoArguments extends WebAPICallOptions, TokenOverridable, LocaleAware {
