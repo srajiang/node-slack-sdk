@@ -263,6 +263,8 @@ export interface AttachmentBlock {
   call?:                     Call;
   external_id?:              string;
   source?:                   string;
+  file_id?:                  string;
+  file?:                     BlockFile;
   text?:                     Text;
   fallback?:                 string;
   image_url?:                string;
@@ -400,6 +402,29 @@ export interface AppIconUrls {
   image_512?:      string;
   image_1024?:     string;
   image_original?: string;
+}
+
+export interface BlockFile {
+  shares?: Shares;
+  size?:   number;
+  id?:     string;
+}
+
+export interface Shares {
+  public?:  { [key: string]: Private[] };
+  private?: { [key: string]: Private[] };
+}
+
+export interface Private {
+  share_user_id?:     string;
+  reply_users?:       string[];
+  reply_users_count?: number;
+  reply_count?:       number;
+  ts?:                string;
+  thread_ts?:         string;
+  latest_reply?:      string;
+  channel_name?:      string;
+  team_id?:           string;
 }
 
 export interface Field {
@@ -550,23 +575,6 @@ export interface Reaction {
   count?: number;
   users?: string[];
   url?:   string;
-}
-
-export interface Shares {
-  public?:  { [key: string]: Private[] };
-  private?: { [key: string]: Private[] };
-}
-
-export interface Private {
-  share_user_id?:     string;
-  reply_users?:       string[];
-  reply_users_count?: number;
-  reply_count?:       number;
-  ts?:                string;
-  thread_ts?:         string;
-  latest_reply?:      string;
-  channel_name?:      string;
-  team_id?:           string;
 }
 
 export interface Transcription {

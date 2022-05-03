@@ -167,7 +167,7 @@ export interface MessagesMatch {
   attachments?:  Attachment[];
   is_mpim?:      boolean;
   score?:        number;
-  files?:        File[];
+  files?:        FileElement[];
 }
 
 export interface Attachment {
@@ -219,7 +219,7 @@ export interface Attachment {
   actions?:               Action[];
   blocks?:                Block[];
   preview?:               Preview;
-  files?:                 File[];
+  files?:                 FileElement[];
   filename?:              string;
   size?:                  number;
   mimetype?:              string;
@@ -269,6 +269,8 @@ export interface Block {
   call?:                     Call;
   external_id?:              string;
   source?:                   string;
+  file_id?:                  string;
+  file?:                     BlockFile;
   text?:                     Hint;
   fallback?:                 string;
   image_url?:                string;
@@ -402,13 +404,24 @@ export interface AppIconUrls {
   image_original?: string;
 }
 
+export interface BlockFile {
+  shares?: FileShares;
+  size?:   number;
+  id?:     string;
+}
+
+export interface FileShares {
+  public?:  { [key: string]: Public[] };
+  private?: { [key: string]: Public[] };
+}
+
 export interface Field {
   title?: string;
   value?: string;
   short?: boolean;
 }
 
-export interface File {
+export interface FileElement {
   id?:                        string;
   created?:                   number;
   timestamp?:                 number;
@@ -560,11 +573,6 @@ export interface Reaction {
   count?: number;
   users?: string[];
   url?:   string;
-}
-
-export interface FileShares {
-  public?:  { [key: string]: Public[] };
-  private?: { [key: string]: Public[] };
 }
 
 export interface Transcription {

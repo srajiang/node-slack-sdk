@@ -138,7 +138,7 @@ export interface Latest {
   topic?:          string;
   attachments?:    Attachment[];
   blocks?:         Block[];
-  files?:          File[];
+  files?:          FileElement[];
   reactions?:      string[];
   root?:           Root;
   upload?:         boolean;
@@ -202,7 +202,7 @@ export interface Attachment {
   actions?:               Action[];
   blocks?:                Block[];
   preview?:               Preview;
-  files?:                 File[];
+  files?:                 FileElement[];
   filename?:              string;
   size?:                  number;
   mimetype?:              string;
@@ -252,6 +252,8 @@ export interface Block {
   call?:                     Call;
   external_id?:              string;
   source?:                   string;
+  file_id?:                  string;
+  file?:                     BlockFile;
   text?:                     Hint;
   fallback?:                 string;
   image_url?:                string;
@@ -385,13 +387,36 @@ export interface AppIconUrls {
   image_original?: string;
 }
 
+export interface BlockFile {
+  shares?: Shares;
+  size?:   number;
+  id?:     string;
+}
+
+export interface Shares {
+  public?:  { [key: string]: Private[] };
+  private?: { [key: string]: Private[] };
+}
+
+export interface Private {
+  share_user_id?:     string;
+  reply_users?:       string[];
+  reply_users_count?: number;
+  reply_count?:       number;
+  ts?:                string;
+  thread_ts?:         string;
+  latest_reply?:      string;
+  channel_name?:      string;
+  team_id?:           string;
+}
+
 export interface Field {
   title?: string;
   value?: string;
   short?: boolean;
 }
 
-export interface File {
+export interface FileElement {
   id?:                        string;
   created?:                   number;
   timestamp?:                 number;
@@ -543,23 +568,6 @@ export interface Reaction {
   count?: number;
   users?: string[];
   url?:   string;
-}
-
-export interface Shares {
-  public?:  { [key: string]: Private[] };
-  private?: { [key: string]: Private[] };
-}
-
-export interface Private {
-  share_user_id?:     string;
-  reply_users?:       string[];
-  reply_users_count?: number;
-  reply_count?:       number;
-  ts?:                string;
-  thread_ts?:         string;
-  latest_reply?:      string;
-  channel_name?:      string;
-  team_id?:           string;
 }
 
 export interface Transcription {
@@ -1392,6 +1400,7 @@ export interface TeamPrefs {
   mobile_session_duration?:                            number;
   uneditable_user_profile_fields?:                     string[];
   thorn_safer_scan?:                                   boolean;
+  allow_free_automated_trials?:                        boolean;
 }
 
 export interface CallsApps {
