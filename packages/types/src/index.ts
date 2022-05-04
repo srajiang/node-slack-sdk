@@ -468,6 +468,7 @@ export interface CallUserExternal {
   avatar_url: string;
 }
 
+// TODO: Rename MessageMetadata
 export interface Metadata {
   event_type: string;
   event_payload: Record<string, unknown>;
